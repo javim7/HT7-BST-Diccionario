@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 /***************************************
  * @author Javier Mombiela 20067
  * 
- * Clase Main, funcionamiento del programa.
+ * Clase Main, funcionamiento del programa
+ * se encarga de leer el archivo y ordenar
+ * todo.
  ***************************************/
 public class Main {
 
@@ -17,6 +19,12 @@ public class Main {
      * Metodo utilizado para controlar el programa
      */
     public static void main(String[] args) {
+
+        //creando instancias
+        BinaryTree miArbol = new BinaryTree();
+
+        //creando variables
+        String ing, esp, fra;
 
         //se utiliza un try catch para aseguranos que el archivo pueda ser leido correctamente 
         try{
