@@ -103,6 +103,23 @@ public class BinaryTree<E>
     }
 
     /**
+     *@pre receives a binary tree
+     * @post Returns reference to (possibly empty) right subtree
+     * 
+     * @param bt es tipo binary tree
+     * @return el arbol tipo string ya ordenado
+     */
+    public String inOrder(BinaryTree bt) {
+        String arbol = "";
+        if (bt.val != null) {
+            arbol += inOrder(bt.left);
+            arbol += bt.value();
+            arbol += inOrder(bt.right);
+        }
+        return arbol;
+    }
+
+    /**
      * Get reference to parent of this node
      *
      * @post Returns reference to parent node, or null

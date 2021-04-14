@@ -1,5 +1,5 @@
-house,casa, loge
-rdog,perro,chien
+house,casa,loge
+dog,perro,chien
 homework,tarea,devoirs
 woman,mujer,femme
 town,pueblo,ville
