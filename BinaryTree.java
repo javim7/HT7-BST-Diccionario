@@ -1,4 +1,4 @@
-//Referencia de la clase PriorityQueue
+//Referencia de la clase BinaryTree
 // An implementation of nodes for use in binary trees.
 // (c) 1998, 2001 duane a. bailey
 

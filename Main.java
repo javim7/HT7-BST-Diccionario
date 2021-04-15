@@ -1,151 +1,111 @@
-//importando clases externas
-import java.util.*; 
-import java.io.File;
+//importando clases
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
+import java.util.stream.Stream;
+
 
 /***************************************
  * @author Javier Mombiela 20067
  * 
  * Clase Main, funcionamiento del programa
- * se encarga de leer el archivo y ordenar
- * todo.
+ * se encarga de leer los archivos y hacer
+ * las asosiaciones entre las palabras
+ * para luego poder crear el arbol 
+ * y asi poder tener el diccionario.
  ***************************************/
 public class Main {
-
-
-    /** 
-     * @param args
-     * Metodo utilizado para controlar el programa
-     */
     public static void main(String[] args) {
 
         //creando instancias
-        ArrayList<Association> diccionario = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        BinaryTree miArbol = new BinaryTree();
 
-        //creando variables
-        String ing = null, esp=null, fra=null;
+        //creando la listas para tener los diccionarios
+        //son 6 para poder tener todas las combinaciones de traduccion posibles
+        ArrayList<Association> listaIE = new ArrayList();
+        ArrayList<Association> listaIF = new ArrayList();
+
+        ArrayList<Association> listaEI = new ArrayList();
+        ArrayList<Association> listaEF = new ArrayList();
+
+        ArrayList<Association> listaFI = new ArrayList();
+        ArrayList<Association> listaFE = new ArrayList();
+
+        //arraylist que tendra las opciones de idiomas
         ArrayList<String> opciones = new ArrayList<>();
 
-        //se utiliza un try catch para aseguranos que el archivo pueda ser leido correctamente 
-        try{
+        //Para leer el archivo
+        ArrayList<String> archivo = new ArrayList<>();
 
-            //creando variables
-            File archivoTexto = new File("diccionario.txt"); //creando nuestro nuevo archivo
+        //try catch para poder encontrar el archivo de texto que contiene las palabras
+        try {
+            Stream<String> lines = Files.lines(
+                    Paths.get("diccionario.txt"),
+                    StandardCharsets.UTF_8
+            );
+            lines.forEach(archivo::add);
 
-            Scanner scan = new Scanner(archivoTexto); //instanciando la clase scanner con el archivo
+        } catch (IOException e ){
+            System.out.println("No se ha encontrado el archivo!");
+        }
 
-            while(scan.hasNextLine()) { //while para que se lean todas las lineas en el archivo
+        //haciendo un foreach para poder crear un arraylist con los 3 idiomas
+        for (String linea : archivo) {
 
+            ArrayList<String> traduc = new ArrayList();
 
-                String linea = scan.nextLine(); //guardando los elementos (de cada linea) como variables
-                //separando los elementos por sus comas
-                String[] separar = linea.split(",");
-
-                //guardando cada lenguaje en variables
-                ing = separar[0];
-                esp = separar[1];
-                fra = separar[2];
-
-                //creando los diccionarios en ingles
-                Association<String, String> diccionarioIng1 = new Association<>(ing, esp);
-                Association diccionarioIng2 = new Association<>(ing, fra);
-
-                //creando los diccionarios en espanol
-                Association diccionarioEsp1 = new Association<>(esp, ing);
-                Association diccionarioEsp2 = new Association<>(esp, fra);
-
-                //creando los diccionarios en frances
-                Association diccionarioFra1 = new Association<>(fra, ing);
-                Association diccionarioFra2 = new Association<>(fra, esp);
-
-                //System.out.println(diccionarioIng1);
-                //System.out.println(ing + " " +esp +" " + fra); //imprimiendo las lineas
-
+            //foreach para poder separar las palabras por las comas y agregarlas a la lista
+            for (String palabra : linea.split(",")) {
+                traduc.add(palabra);
             }
 
-            //se hace un catch por si el archivo no se puede leer
-        } catch (FileNotFoundException errorArchivoNoEncontrado) {
-            // Se le advierte al usuario que el archivo no es existente, se termina el programa.
-            System.out.println("\nEl archivo de texto diccionario.txt no ha sido encontrado.\n");
+            /**
+             * Se crean varias listas para poder tener todas las combinaciones de idiomas 
+             * y asi poder agregar las palabras correspondientes a la lista correspondiente. 
+             */
+
+            //creando diccionarios de ingles
+            listaIE.add(new Association<String, String>(traduc.get(0).toLowerCase(), traduc.get(1).toLowerCase()));
+            listaIF.add(new Association<String, String>(traduc.get(0).toLowerCase(), traduc.get(2).toLowerCase()));
+
+            //creando diccionarios de espanol
+            listaEI.add(new Association<String, String>(traduc.get(1).toLowerCase(), traduc.get(0).toLowerCase()));
+            listaEF.add(new Association<String, String>(traduc.get(1).toLowerCase(), traduc.get(2).toLowerCase()));
+
+             //creando diccionarios de espanol
+             listaFI.add(new Association<String, String>(traduc.get(2).toLowerCase(), traduc.get(0).toLowerCase()));
+             listaFE.add(new Association<String, String>(traduc.get(2).toLowerCase(), traduc.get(1).toLowerCase()));
+
         }
 
-
-        //agregando las opciones al arraylist
-        opciones.add("Ingles");
-        opciones.add("Español");
-        opciones.add("Frances");
-
-        //pidiendo al usuario que ingrese el idioma que quiere traducir
-        System.out.println("\nQue idioma es el que desea traducir?");
-
-        //imprimiendo las tres opciones
-        for(int i=0;i<opciones.size();i++){
-            int op = i+1;
-            System.out.println(op + " " + opciones.get(i));
-        }
-
-        //creando la variable del primer idioma
-        int idioma1;
-
-        //creando un try catch para asegurar que se ingrese una opcion correcta entre 1 y 3
-        while(true){
-            try{
-                System.out.print("Opcion: ");
-                idioma1 = scanner.nextInt();
-                //(Programación defensiva)
-                //Protección por si el usuario elige un número menor a uno o mayor a tres, seguirá pidiendo la opción. 
-                if(idioma1 > 3 || idioma1 < 1){
-                    System.out.println("Opcion incorrecta, intenta de nuevo..");
-                }
-                //Si el usuario ingresa los datos correctos terminará el ciclo while
-                else{break;}
-            }
-            //Si el usuario ingresa una letra regresará un mensaje de error. 
-            catch(Exception o){
-                scanner.nextLine();
-                System.out.println("Caracter invalido! Intenta de nuevo..");
-            }
-        }  
-
-        //if para ver que idioma sacar de la lista
-        String idiom1 = "";
-        if(idioma1==1) {
-            idiom1 = "Ingles";
-            opciones.remove(0);
-        } 
-        else if(idioma1==2) {
-            idiom1 = "Español";
-            opciones.remove(1);
-        } 
-        else if(idioma1==3) {
-            idiom1 = "Frances";
-            opciones.remove(2);
-        }
-        //System.out.println(idiom1);
-
-        //viendo a que idioma quiere traducir el usuario
-        System.out.println("\nA que idioma quiere traducir su texto?");
-
-        //imprimiendo las opciones restantes
-        for(int i=0;i<opciones.size();i++){
-            int op = i+1;
-            System.out.println(op + " " + opciones.get(i));
-        }
-
+            //agregando las opciones al arraylist
+          opciones.add("Ingles");
+          opciones.add("Español");
+          opciones.add("Frances");
+  
+          //pidiendo al usuario que ingrese el idioma que quiere traducir
+          System.out.println("\nQue idioma es el que desea traducir?");
+  
+          //imprimiendo las tres opciones
+          for(int i=0;i<opciones.size();i++){
+              int op = i+1;
+              System.out.println(op + " " + opciones.get(i));
+          }
+  
           //creando la variable del primer idioma
-          int idioma2;
-
+          int idioma1;
+  
           //creando un try catch para asegurar que se ingrese una opcion correcta entre 1 y 3
           while(true){
               try{
                   System.out.print("Opcion: ");
-                  idioma2 = scanner.nextInt();
+                  idioma1 = scanner.nextInt();
                   //(Programación defensiva)
-                  //Protección por si el usuario elige un número menor a uno o mayor a dos, seguirá pidiendo la opción. 
-                  if(idioma2 > 2 || idioma2 < 1){
+                  //Protección por si el usuario elige un número menor a uno o mayor a tres, seguirá pidiendo la opción. 
+                  if(idioma1 > 3 || idioma1 < 1){
                       System.out.println("Opcion incorrecta, intenta de nuevo..");
                   }
                   //Si el usuario ingresa los datos correctos terminará el ciclo while
@@ -157,41 +117,167 @@ public class Main {
                   System.out.println("Caracter invalido! Intenta de nuevo..");
               }
           }  
+  
+          //if para ver que idioma sacar de la lista
+          String idiom1 = "";
+          if(idioma1==1) {
+              idiom1 = "Ingles";
+              opciones.remove(0);
+          } 
+          else if(idioma1==2) {
+              idiom1 = "Español";
+              opciones.remove(1);
+          } 
+          else if(idioma1==3) {
+              idiom1 = "Frances";
+              opciones.remove(2);
+          }
+          
+  
+          //viendo a que idioma quiere traducir el usuario
+          System.out.println("\nA que idioma quiere traducir su texto?");
+  
+          //imprimiendo las opciones restantes
+          for(int i=0;i<opciones.size();i++){
+              int op = i+1;
+              System.out.println(op + " " + opciones.get(i));
+          }
+  
+            //creando la variable del primer idioma
+            int idioma2;
+  
+            //creando un try catch para asegurar que se ingrese una opcion correcta entre 1 y 3
+            while(true){
+                try{
+                    System.out.print("Opcion: ");
+                    idioma2 = scanner.nextInt();
+                    //(Programación defensiva)
+                    //Protección por si el usuario elige un número menor a uno o mayor a dos, seguirá pidiendo la opción. 
+                    if(idioma2 > 2 || idioma2 < 1){
+                        System.out.println("Opcion incorrecta, intenta de nuevo..");
+                    }
+                    //Si el usuario ingresa los datos correctos terminará el ciclo while
+                    else{break;}
+                }
+                //Si el usuario ingresa una letra regresará un mensaje de error. 
+                catch(Exception o){
+                    scanner.nextLine();
+                    System.out.println("Caracter invalido! Intenta de nuevo..");
+                }
+            }  
+  
+        //if para ver que idioma se selecciono
+        //se hacen todas las combinaciones para ver a que idioma quiere traducir el texto
+        String idiom2 = "";
+        if(opciones.contains("Ingles") && opciones.contains("Español") && idioma2==1){idiom2="Ingles";}
+        if(opciones.contains("Ingles") && opciones.contains("Frances") && idioma2==1){idiom2="Ingles";}
+        if(opciones.contains("Ingles") && opciones.contains("Español") && idioma2==2){idiom2="Español";}
+        if(opciones.contains("Ingles") && opciones.contains("Frances") && idioma2==2){idiom2="Frances";}
+        if(opciones.contains("Español") && opciones.contains("Frances") && idioma2==1){idiom2="Español";}
+        if(opciones.contains("Español") && opciones.contains("Frances") && idioma2==2){idiom2="Frances";}
 
-          //if para ver que idioma se selecciono
-          String idiom2 = "";
-          if(opciones.contains("Ingles") && opciones.contains("Español") && idioma2==1){idiom2="Ingles";}
-          if(opciones.contains("Ingles") && opciones.contains("Frances") && idioma2==1){idiom2="Ingles";}
-          if(opciones.contains("Ingles") && opciones.contains("Español") && idioma2==2){idiom2="Español";}
-          if(opciones.contains("Ingles") && opciones.contains("Frances") && idioma2==2){idiom2="Frances";}
-          if(opciones.contains("Español") && opciones.contains("Frances") && idioma2==1){idiom2="Español";}
-          if(opciones.contains("Español") && opciones.contains("Frances") && idioma2==2){idiom2="Frances";}
-          //System.out.println(idiom2);
+        //creando una lista vacia para poder cambiarle el valor dependiendo de que traduccion se quiera
+        ArrayList<Association> queLista = new ArrayList<>();
 
+        //viendo cual es la traduccion final para poder ver que lista se utilizara de las 6 creadas anteriormente
+        if(idiom1.equals("Ingles") && idiom2.equals("Español")) {
+            queLista = listaIE;
+        } else if(idiom1.equals("Ingles") && idiom2.equals("Frances")) {
+            queLista = listaIF;
+        }  else if(idiom1.equals("Español") && idiom2.equals("Ingles")) {
+            queLista = listaEI;
+        } else if(idiom1.equals("Español") && idiom2.equals("Frances")) {
+            queLista = listaEF;
+        } else if(idiom1.equals("Frances") && idiom2.equals("Ingles")) {
+            queLista = listaFI;
+        } else if(idiom1.equals("Frances") && idiom2.equals("Español")) {
+            queLista = listaFE;
+        } 
 
-           //se utiliza un try catch para aseguranos que el archivo pueda ser leido correctamente 
-        try{
+        //creando la instancia del arbol con el diccionario y la lista que sean necesarios
+        BinaryTree<Association> elDiccionario = new BinaryTree<Association>(queLista.get(0));
 
-            //creando variables
-            File archivoTexto = new File("texto.txt"); //creando nuestro nuevo archivo
-
-            Scanner scan = new Scanner(archivoTexto); //instanciando la clase scanner con el archivo
-
-            while(scan.hasNextLine()) { //while para que se lean todas las lineas en el archivo
-
-
-                String linea = scan.nextLine(); //guardando los elementos (de cada linea) como variables
-               
-                //System.out.println(linea); //imprimiendo las lineas
+        //for para agregar el diccionario al arbol
+        for (int n = 0; n < queLista.size(); n++) {
+            if ((n+1) < queLista.size()) {
+                BinaryTree<Association> btSiguiente = new BinaryTree<>(queLista.get(n+1));
+                agregar(elDiccionario, btSiguiente);
             }
-
-            //se hace un catch por si el archivo no se puede leer
-        } catch (FileNotFoundException errorArchivoNoEncontrado) {
-            // Se le advierte al usuario que el archivo no es existente, se termina el programa.
-            System.out.println("\nEl archivo de texto texto.txt no ha sido encontrado.\n");
         }
 
-        
-        
+        //agregando arbol in ordcer
+        elDiccionario.inOrder(elDiccionario);
+        System.out.println("\n------Diccionario------");
+        System.out.println(elDiccionario.inOrder(elDiccionario));
+
+
+         //Leyendo el archivo e imprimiendo el texto ingresado original
+         System.out.println();
+         System.out.println("------Texto ingresado------");
+         archivo = new ArrayList<>();
+
+         //haciendo try catch para asegurar que si se encuentre el archivo
+         try {
+             Stream<String> lines = Files.lines(
+                     Paths.get("texto.txt"),
+                     StandardCharsets.UTF_8
+             );
+             lines.forEach(archivo::add);
+
+         } catch (IOException e ){
+             System.out.println("No se ha podido leer el archivo!");
+         }
+
+         //haciendo la traduccion
+         String traduccion = "";
+        for (String linea : archivo) {
+            //quitandole los puntos a la oracion
+            System.out.println(linea);
+            String lineaClean = linea.replaceAll("\\.","");
+
+            for (String palabra : lineaClean.trim().split("\\s+")) {
+
+                //if para ver si la palabra esta en el diccionario o no 
+                //para ver si se le agregan los asteriscos.
+                if (elDiccionario.buscar(palabra) == null) {
+                    traduccion += "*"+palabra+"* ";
+                } else {
+                    //haciendo la traduccion y agregando un espacio
+                    traduccion += elDiccionario.buscar(palabra) + " ";
+                }
+            }
+            traduccion += ".\n";
+        }
+
+        //imprimir el resultado final de la traduccion
+        System.out.println("\n------Traduccion------");
+        System.out.println(traduccion+"\n");
+        scanner.close(); //cerrando el scanner
+
+    }
+
+    /**
+     * Metodo para poder crear el arbol binario
+     * @post 
+     * @param btActual es el primarytree original creado anteriormente como instancia
+     * @param btSiguiente es el binary tree que se modifica a partir del actual
+     * @return 
+     */
+    public static void agregar(BinaryTree btActual, BinaryTree btSiguiente) {
+
+        if (btActual.value().toString().compareTo(btSiguiente.value().toString()) > 0) {
+            if (btActual.left().value() == null) {
+                btActual.setLeft(btSiguiente);
+            } else {
+                agregar(btActual.left(), btSiguiente);
+            }
+        } else if (btActual.value().toString().compareTo(btSiguiente.value().toString()) < 0) {
+            if (btActual.right().value() == null) {
+                btActual.setRight(btSiguiente);
+            } else {
+                agregar(btActual.right(), btSiguiente);
+            }
+        }
+
     }
 }
