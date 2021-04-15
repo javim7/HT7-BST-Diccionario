@@ -58,7 +58,35 @@ public class prueba {
 
         }
 
-        System.out.println(listaFE);
+        BinaryTree<Association> diccionarioIng1 = new BinaryTree<Association>(listaIE.get(0));
+
+        for (int n = 0; n < listaIE.size(); n++) {
+            if ((n+1) < listaIE.size()) {
+                BinaryTree<Association> btSiguiente = new BinaryTree<>(listaIE.get(n+1));
+                agregar(diccionarioIng1, btSiguiente);
+            }
+        }
+
+        System.out.println(diccionarioIng1);
+
+    }
+
+
+        public static void agregar(BinaryTree btActual, BinaryTree btSiguiente) {
+
+            if (btActual.value().toString().compareTo(btSiguiente.value().toString()) > 0) {
+                if (btActual.left().value() == null) {
+                    btActual.setLeft(btSiguiente);
+                } else {
+                    agregar(btActual.left(), btSiguiente);
+                }
+            } else if (btActual.value().toString().compareTo(btSiguiente.value().toString()) < 0) {
+                if (btActual.right().value() == null) {
+                    btActual.setRight(btSiguiente);
+                } else {
+                    agregar(btActual.right(), btSiguiente);
+                }
+            }
 
     }
 }
