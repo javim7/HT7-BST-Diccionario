@@ -24,8 +24,6 @@ public class Main {
         ArrayList<Association> diccionario = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         BinaryTree miArbol = new BinaryTree();
-       //Association diccionarioIng1;
-        //Association diccionarioIng2;
 
         //creando variables
         String ing = null, esp=null, fra=null;
@@ -52,7 +50,7 @@ public class Main {
                 fra = separar[2];
 
                 //creando los diccionarios en ingles
-                Association diccionarioIng1 = new Association<>(ing, esp);
+                Association<String, String> diccionarioIng1 = new Association<>(ing, esp);
                 Association diccionarioIng2 = new Association<>(ing, fra);
 
                 //creando los diccionarios en espanol
@@ -73,10 +71,6 @@ public class Main {
             // Se le advierte al usuario que el archivo no es existente, se termina el programa.
             System.out.println("\nEl archivo de texto diccionario.txt no ha sido encontrado.\n");
         }
-
-        //creando los diccionarios en ingles
-        //diccionarioIng1 = new Association<>(ing, esp);
-        //diccionarioIng2 = new Association<>(ing, fra);
 
 
         //agregando las opciones al arraylist
