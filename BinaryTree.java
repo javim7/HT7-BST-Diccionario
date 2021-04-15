@@ -119,6 +119,29 @@ public class BinaryTree<E>
         return arbol;
     }
 
+     /**
+     *@pre receives a string
+     * @post Returns null
+     * 
+     * @param palabra es la palabra a traducir
+     * @return null
+     */
+    public String buscar(String palabraNueva) {
+        palabraNueva = palabraNueva.toLowerCase();
+
+        if (this.val == null) {
+            return null;
+        } else if (((Association) this.val).theKey.toString().equals(palabraNueva)) {
+            return (String) ((Association) this.val).theValue;
+        } else if (((Association) this.val).theKey.toString().compareTo(palabraNueva) > 0) {
+            return this.left.buscar(palabraNueva);
+        } else if (((Association) this.val).theKey.toString().compareTo(palabraNueva) < 0) {
+            return this.right.buscar((palabraNueva));
+        }
+        return null;
+
+    }
+
     /**
      * Get reference to parent of this node
      *
