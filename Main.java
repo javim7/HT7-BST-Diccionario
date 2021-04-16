@@ -224,6 +224,7 @@ public class Main {
             queLista = listaFE;
         } 
 
+        System.out.println(queLista.get(0));
         //creando la instancia del arbol con el diccionario y la lista que sean necesarios
         BinaryTree<Association> elDiccionario = new BinaryTree<Association>(queLista.get(0));
 
@@ -238,6 +239,7 @@ public class Main {
         //agregando arbol in ordcer
         elDiccionario.inOrder(elDiccionario);
         System.out.println("\n------Diccionario In Order------");
+        //System.out.println(elDiccionario.inOrder(elDiccionario));
         Nodo nodoRaiz = arbol.getRaiz();
         String inOrderFinal2 = "(";
 

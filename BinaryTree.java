@@ -282,21 +282,29 @@ public class BinaryTree<E>
      * @param btSiguiente es el binary tree que se modifica a partir del actual
      * @return 
      */
-    public static void agregar(BinaryTree btActual, BinaryTree btSiguiente) {
+    public static boolean agregar(BinaryTree btActual, BinaryTree btSiguiente) {
+
+        boolean flag = false;
 
         if (btActual.value().toString().compareTo(btSiguiente.value().toString()) > 0) {
             if (btActual.left().value() == null) {
                 btActual.setLeft(btSiguiente);
+                flag = true;
             } else {
                 agregar(btActual.left(), btSiguiente);
+                flag = true;
             }
         } else if (btActual.value().toString().compareTo(btSiguiente.value().toString()) < 0) {
             if (btActual.right().value() == null) {
                 btActual.setRight(btSiguiente);
+                flag = true;
             } else {
                 agregar(btActual.right(), btSiguiente);
+                flag = true;
             }
         }
+
+        return flag;
 
     }
 
