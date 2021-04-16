@@ -201,7 +201,7 @@ public class Main {
         for (int n = 0; n < queLista.size(); n++) {
             if ((n+1) < queLista.size()) {
                 BinaryTree<Association> btSiguiente = new BinaryTree<>(queLista.get(n+1));
-                agregar(elDiccionario, btSiguiente);
+                BinaryTree.agregar(elDiccionario, btSiguiente);
             }
         }
 
@@ -256,28 +256,5 @@ public class Main {
 
     }
 
-    /**
-     * Metodo para poder crear el arbol binario
-     * @post 
-     * @param btActual es el primarytree original creado anteriormente como instancia
-     * @param btSiguiente es el binary tree que se modifica a partir del actual
-     * @return 
-     */
-    public static void agregar(BinaryTree btActual, BinaryTree btSiguiente) {
-
-        if (btActual.value().toString().compareTo(btSiguiente.value().toString()) > 0) {
-            if (btActual.left().value() == null) {
-                btActual.setLeft(btSiguiente);
-            } else {
-                agregar(btActual.left(), btSiguiente);
-            }
-        } else if (btActual.value().toString().compareTo(btSiguiente.value().toString()) < 0) {
-            if (btActual.right().value() == null) {
-                btActual.setRight(btSiguiente);
-            } else {
-                agregar(btActual.right(), btSiguiente);
-            }
-        }
-
-    }
+    
 }

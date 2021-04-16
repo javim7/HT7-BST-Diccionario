@@ -189,6 +189,7 @@ public class BinaryTree<E>
         right.setParent(this);
     }
 
+
     /**
      * Update the parent of this node
      *
@@ -266,6 +267,31 @@ public class BinaryTree<E>
     {
         if (parent() == null) return false;
         return this == parent().right();
+    }
+
+    /**
+     * Metodo para poder crear el arbol binario
+     * @post 
+     * @param btActual es el primarytree original creado anteriormente como instancia
+     * @param btSiguiente es el binary tree que se modifica a partir del actual
+     * @return 
+     */
+    public static void agregar(BinaryTree btActual, BinaryTree btSiguiente) {
+
+        if (btActual.value().toString().compareTo(btSiguiente.value().toString()) > 0) {
+            if (btActual.left().value() == null) {
+                btActual.setLeft(btSiguiente);
+            } else {
+                agregar(btActual.left(), btSiguiente);
+            }
+        } else if (btActual.value().toString().compareTo(btSiguiente.value().toString()) < 0) {
+            if (btActual.right().value() == null) {
+                btActual.setRight(btSiguiente);
+            } else {
+                agregar(btActual.right(), btSiguiente);
+            }
+        }
+
     }
 
     /**
