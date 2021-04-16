@@ -4,6 +4,8 @@
 
 import java.lang.Math;
 import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class implements a single node of a binary tree.  It is a
@@ -31,6 +33,8 @@ public class BinaryTree<E>
      */
     protected BinaryTree<E> left, right; // children of node
 
+
+
     /**
      * A one-time constructor, for constructing empty trees.
      * Space efficiencies are possible if empty trees are reused.
@@ -38,10 +42,12 @@ public class BinaryTree<E>
      * @post Constructor that generates an empty node
      * @return an empty node
      */
-    public BinaryTree()
-    {
-        val = null;
-        parent = null; left = right = this;
+    private Nodo raiz;
+
+    public BinaryTree(){
+
+        raiz = null;
+
     }
 
     /**
@@ -396,5 +402,74 @@ public class BinaryTree<E>
         s.append('>');
         return s.toString();
     }
+
+    public Nodo getRaiz(){
+
+        return this.raiz;
+
+    }
+
+    public void insertarNodo(String llave, Association<String,ArrayList<HashMap<String,String>>> valor){
+
+        Nodo nuevoNodo = new Nodo(llave,valor);
+
+        if(this.raiz == null){
+
+            raiz = nuevoNodo;
+
+        }
+
+        else{
+
+            Nodo NodoAuxiliar = this.raiz;
+
+            Nodo padre;
+
+            while(true){
+
+                padre = NodoAuxiliar;
+
+                NodoAuxiliar = NodoAuxiliar.getNodoIzquierda();
+
+                if(NodoAuxiliar == null){
+
+                    padre.setNodoIzquierda(nuevoNodo);
+                    return;
+    
+                }
+
+            }
+
+        }
+
+    }
+
+    public boolean esVacio(){
+
+        return this.raiz == null;
+
+    }
+
+    public Nodo localizarNodo(String palabra){
+
+        Nodo temporal = this.raiz;
+
+        while(temporal.getLlave() != palabra){
+
+            temporal = temporal.getNodoIzquierda();
+            if(temporal == null){
+
+                return null;
+
+            }
+
+        }
+        return temporal;
+
+
+    }
+
+
 }
+
 

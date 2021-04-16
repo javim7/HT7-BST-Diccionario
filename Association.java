@@ -43,14 +43,6 @@ public class Association<K,V> implements MapEntry<K,V>
         theValue = value;
     }
 
-    public Association(K key, V value, V value2)
-    {
-        
-        theKey = key;
-        theValue = value;
-        theValue2 = value2;
-    }
-
     /**
      * Constructs a pair from a key; value is null.
      *

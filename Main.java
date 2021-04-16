@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -19,6 +20,8 @@ import java.util.stream.Stream;
  ***************************************/
 public class Main {
     public static void main(String[] args) {
+
+        BinaryTree arbol = new BinaryTree();
 
         //creando instancias
         Scanner scanner = new Scanner(System.in);
@@ -39,6 +42,8 @@ public class Main {
 
         //Para leer el archivo
         ArrayList<String> archivo = new ArrayList<>();
+
+        Association<String, ArrayList<HashMap<String, String>>> diccionario = null;
 
         //try catch para poder encontrar el archivo de texto que contiene las palabras
         try {
@@ -78,6 +83,22 @@ public class Main {
              //creando diccionarios de espanol
              listaFI.add(new Association<String, String>(traduc.get(2).toLowerCase(), traduc.get(0).toLowerCase()));
              listaFE.add(new Association<String, String>(traduc.get(2).toLowerCase(), traduc.get(1).toLowerCase()));
+
+            String key = traduc.get(1);
+            ArrayList<HashMap<String, String>> losMapas = new ArrayList<>();
+            HashMap<String, String> ingles = new HashMap<>();
+            ingles.put("Ingles", traduc.get(0));
+            HashMap<String, String> espanol = new HashMap<>();
+            espanol.put("Español", traduc.get(1));
+            HashMap<String, String> frances = new HashMap<>(); 
+            frances.put("Frances", traduc.get(2));
+            losMapas.add(ingles);
+            losMapas.add(espanol);
+            losMapas.add(frances);
+
+            diccionario = new Association<>(key, losMapas);
+
+            arbol.insertarNodo(key, diccionario);
 
         }
 
@@ -208,9 +229,32 @@ public class Main {
         //agregando arbol in ordcer
         elDiccionario.inOrder(elDiccionario);
         System.out.println("\n------Diccionario In Order------");
-        System.out.println(elDiccionario.inOrder(elDiccionario));
-
-
+        Nodo nodoRaiz = arbol.getRaiz();
+        String inOrderFinal2 = "(";
+        while(nodoRaiz.getNodoIzquierda() != null){
+            ArrayList<HashMap<String, String>> temp = nodoRaiz.getValor().getValue();
+            String inOrderFinal = "(";
+            // inOrderFinal += ((Object) temp.get(0)).getValue((Object)"Ingles");
+            for(int i = 0; i < temp.size(); i++) {
+               inOrderFinal += temp.get(i).toString().replace("{","").replace("}","") + " ";
+            }
+            inOrderFinal += ")";
+            if(nodoRaiz.getNodoIzquierda().getNodoIzquierda() == null){
+               
+                Nodo temporal = nodoRaiz.getNodoIzquierda();
+                ArrayList temp2 = temporal.getValor().getValue();
+                String t = temp2.toString().replace("{","(").replace("}",")").replace("[","").replace("]","").replace(",","").replace(")","").replace("(","");
+                System.out.println("("+t + " )");
+                // inOrderFinal += ((Object) temp.get(0)).getValue((Object)"Ingles");
+                for(int i = 0; i < temp2.size(); i++) {
+                    inOrderFinal2 += temp.get(i).toString().replace("{","").replace("}","").replace("[","").replace("]","") + " ";
+                }
+            }
+            nodoRaiz = nodoRaiz.getNodoIzquierda();
+            
+            System.out.println(inOrderFinal);
+        }
+        //System.out.println(inOrderFinal2);
          //Leyendo el archivo e imprimiendo el texto ingresado original
          System.out.println();
          System.out.println("------Texto ingresado------");
