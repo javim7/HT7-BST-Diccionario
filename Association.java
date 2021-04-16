@@ -21,6 +21,8 @@ public class Association<K,V> implements MapEntry<K,V>
      */
     protected V theValue; // the value of the key-value pair
 
+    protected V theValue2; // the value of the key-value pair
+
     /*
       for example:
       Association<String,Integer> personAttribute =
@@ -39,6 +41,14 @@ public class Association<K,V> implements MapEntry<K,V>
         
         theKey = key;
         theValue = value;
+    }
+
+    public Association(K key, V value, V value2)
+    {
+        
+        theKey = key;
+        theValue = value;
+        theValue2 = value2;
     }
 
     /**
@@ -123,7 +133,7 @@ public class Association<K,V> implements MapEntry<K,V>
     public String toString()
     {
         StringBuffer s = new StringBuffer();
-        s.append(getKey()+"="+getValue());
+        s.append(" ("+getKey()+", "+getValue() + ") ");
         return s.toString();
     }
     /*

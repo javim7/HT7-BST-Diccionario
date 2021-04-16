@@ -207,7 +207,7 @@ public class Main {
 
         //agregando arbol in ordcer
         elDiccionario.inOrder(elDiccionario);
-        System.out.println("\n------Diccionario------");
+        System.out.println("\n------Diccionario In Order------");
         System.out.println(elDiccionario.inOrder(elDiccionario));
 
 
@@ -250,7 +250,7 @@ public class Main {
         }
 
         //imprimir el resultado final de la traduccion
-        System.out.println("\n------Traduccion------");
+        System.out.println("\n------Traduccion Final------");
         System.out.println(traduccion+"\n");
         scanner.close(); //cerrando el scanner
 
