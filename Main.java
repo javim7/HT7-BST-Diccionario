@@ -84,20 +84,29 @@ public class Main {
              listaFI.add(new Association<String, String>(traduc.get(2).toLowerCase(), traduc.get(0).toLowerCase()));
              listaFE.add(new Association<String, String>(traduc.get(2).toLowerCase(), traduc.get(1).toLowerCase()));
 
-            String key = traduc.get(1);
+
+            //creando una llave para los hashmaps
+            String key = traduc.get(0);
+            //arraylist de mapas para poder meter los 3 mapas, 1 por cada idioma
             ArrayList<HashMap<String, String>> losMapas = new ArrayList<>();
+
+            //creando los mapas de los 3 idiomas y agregando las palabras
             HashMap<String, String> ingles = new HashMap<>();
             ingles.put("Ingles", traduc.get(0));
             HashMap<String, String> espanol = new HashMap<>();
             espanol.put("Español", traduc.get(1));
             HashMap<String, String> frances = new HashMap<>(); 
             frances.put("Frances", traduc.get(2));
+
+            //agregando los mapas a la arraylist de mapas
             losMapas.add(ingles);
             losMapas.add(espanol);
             losMapas.add(frances);
 
+            //creando una nuevo asociacion
             diccionario = new Association<>(key, losMapas);
 
+            //inertando el nodo al arbol
             arbol.insertarNodo(key, diccionario);
 
         }
@@ -231,6 +240,8 @@ public class Main {
         System.out.println("\n------Diccionario In Order------");
         Nodo nodoRaiz = arbol.getRaiz();
         String inOrderFinal2 = "(";
+
+        //while para poder obtener todos los elementos en in order
         while(nodoRaiz.getNodoIzquierda() != null){
             ArrayList<HashMap<String, String>> temp = nodoRaiz.getValor().getValue();
             String inOrderFinal = "(";
@@ -251,10 +262,11 @@ public class Main {
                 }
             }
             nodoRaiz = nodoRaiz.getNodoIzquierda();
-            
+            //imrpimiendo el inorder
             System.out.println(inOrderFinal);
         }
         //System.out.println(inOrderFinal2);
+
          //Leyendo el archivo e imprimiendo el texto ingresado original
          System.out.println();
          System.out.println("------Texto ingresado------");
